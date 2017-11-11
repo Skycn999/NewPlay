@@ -41,11 +41,7 @@ DWORD WaitProcessID(WCHAR* processName) {
 
 int main() {	
 
-	Overlay * p_esp_overlay = new Overlay();
-	cout << "Overlay Created" << endl;
-	p_esp_overlay->run();
 
-	return 0;
 	PGameMemHelper *pMem = new PGameMemHelper();
 
 	DWORD gamePid = WaitProcessID(L"TslGame.exe");
@@ -54,7 +50,10 @@ int main() {
 		return 1;
 	}
 
-	
+	Overlay * p_esp_overlay = new Overlay();
+	cout << "Overlay Created" << endl;
+	p_esp_overlay->run();
+
 	system("pause");
 	return 0;
 }

@@ -260,24 +260,25 @@ int patch() {
 }
 
 int unpatch() {
+
+	std::cout << "Unpatching " << std::endl;
 	if (g_obj_handle) {
 		g_obj_handle->KernelObject = 1;
 		g_obj_handle->KernelOnlyAccess = 1;
 	}
-	
-	std::cout << "Unpatching " << std::endl;
+	else {
+		std::cout << "Unpatch Error" << std::endl;
+	}
 	
 	CloseDriver(hDriver);
 	
 	auto hMemory = OpenPhysicalMemory();
 	if (hMemory && hMemory != (HANDLE)-1) {
 		CloseHandle(hMemory);
-		printf("Exploit success!\n");
-		printf("You can now map \Device\PhysicalMemory from usermode, check https://github.com/waryas/UMPMLib/ as a guideline.\n");
-
+		std::cout << "Unpatch failed, you have RISK!!!!" << std::endl;
 	}
 	else {
-		printf("Exploit failed...\n");
+		printf("Unpatch Success...\n");
 	}
 	system("stop.bat");
 
@@ -317,18 +318,17 @@ void StartESP(void)
 
 	CloseHandle(pif.hProcess);   //Close handle to process
 	CloseHandle(pif.hThread);    //Close handle to thread
-	Sleep(10000);
+	
 }
 int main()
 {
 	patch();
 
-	//StartESP();
-
-	system("pause");
+	StartESP();
+	Sleep(10000);
 
 	unpatch();
 
-	system("pause");
+	std::cout << "Launcher Process Exit!!!" << std::endl;
 	return 0;
 }
