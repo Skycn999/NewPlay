@@ -7,6 +7,25 @@
 #pragma comment(lib,"Dwmapi.lib")
    
 
+LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	switch (message)
+	{
+	case WM_PAINT:
+		//render();
+		break;
+	case WM_CREATE:
+		//DwmExtendFrameIntoClientArea(hWnd, &margin);
+		break;
+
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		return 0;
+	}
+
+	return DefWindowProc(hWnd, message, wParam, lParam);
+}
+
 Overlay::Overlay()
 {
 	this->SetupWindow();
@@ -32,12 +51,13 @@ void Overlay::SetupWindow()
 		ExitProcess(0);
 	}
 
+	
 	WNDCLASSEX wc;
 	ZeroMemory(&wc, sizeof(WNDCLASSEX));
 	wc.cbSize = sizeof(WNDCLASSEX);
 	wc.style = CS_HREDRAW | CS_VREDRAW;
-	//TODO
-	//wc.lpfnWndProc = WindowProc;
+	
+	wc.lpfnWndProc = WindowProc;
 	wc.hInstance = GetModuleHandle(0);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)RGB(0, 0, 0);

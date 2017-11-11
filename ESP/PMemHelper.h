@@ -6,6 +6,7 @@
 #include "Superfetch.h"
 #include "PhysicalMemory.h"
 #include "GetWindowsVersion.h"
+#include <iostream>
 
 class PMemHelper
 {
@@ -74,6 +75,9 @@ public:
 		uint8_t* startScan = 0;
 		if (!MapPhysicalMemory(mPMemHandle, (PDWORD64)&startScan, &mMemInfo[mInfoCount - 1].End, (PDWORD64)&ramImage))
 			printf("Mapping failed...\n");
+		else
+			printf("Mapping Success...\n");
+		CloseHandle(mPMemHandle);
 	}
 
 
@@ -338,6 +342,7 @@ public:
 		ALL above should be done before the game start  up
 		*/
 
+		
 	}
 
 	bool InitGameMem(DWORD gamePid) {
@@ -348,6 +353,7 @@ public:
 			return false;
 
 		game_base = this->GetProcessBase(gamePid); 
+		std::cout << std::hex << game_base << std::endl;
 		if (game_base == NULL)
 			return false;
 

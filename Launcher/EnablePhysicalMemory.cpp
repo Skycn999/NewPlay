@@ -212,13 +212,10 @@ int patch() {
 
 				if (0x74636553 == pPoolHeader->PoolTag) {
 					auto pObjectHeader = (POBJECT_HEADER)(lpCursor + 0x30);
-					if(pObjectHeader->Flags == 0x16)
-						printf("HandleCount %d  Flag %x\n", pObjectHeader->HandleCount, pObjectHeader->Flags);
+					
 					if (pObjectHeader->HandleCount >= 0 && pObjectHeader->HandleCount <= 3  && pObjectHeader->Flags == 0x16 )
 					{
-						printf("Get some Object\n");
 						if (pObjectHeader->KernelOnlyAccess == 1 && pObjectHeader->KernelObject == 1) {
-							printf("Found PhysicalMemory Object Header at %p\n", lpCursor += 0x30);
 							pObjectHeader->KernelObject = 0;
 							pObjectHeader->KernelOnlyAccess = 0;
 							g_obj_handle = pObjectHeader;
@@ -254,9 +251,7 @@ int patch() {
 	auto hMemory = OpenPhysicalMemory();
 	if (hMemory && hMemory != (HANDLE)-1) {
 		CloseHandle(hMemory);
-		printf("Exploit success!\n");
-		printf("You can now map \Device\PhysicalMemory from usermode, check https://github.com/waryas/UMPMLib/ as a guideline.\n");
-
+		printf("\nPatch success!\n");
 	}
 	else {
 		printf("Exploit failed...\n");
@@ -290,22 +285,50 @@ int unpatch() {
 }
 
 
-void start_esp() {
-	std::cout << "Start the ESP" << std::endl;
-	system("pause");
-	
+
+
+void StartESP(void)
+{
+	wchar_t szPath[] = L"ESP.exe";
+	PROCESS_INFORMATION pif;  //Gives info on the thread and..
+							  //..process for the new process
+	STARTUPINFO si;          //Defines how to start the program
+
+	ZeroMemory(&si, sizeof(si)); //Zero the STARTUPINFO struct
+	si.cb = sizeof(si);         //Must set size of structure
+
+	BOOL bRet = CreateProcess(
+		szPath, //Path to executable file
+		NULL,   //Command string - not needed here
+		NULL,   //Process handle not inherited
+		NULL,   //Thread handle not inherited
+		FALSE,  //No inheritance of handles
+		0,      //No special flags
+		NULL,   //Same environment block as this prog
+		NULL,   //Current directory - no separate path
+		&si,    //Pointer to STARTUPINFO
+		&pif);   //Pointer to PROCESS_INFORMATION
+
+	if (bRet == FALSE)
+	{
+		MessageBox(HWND_DESKTOP, L"Unable to start program", L"", MB_OK);
+
+	}
+
+	CloseHandle(pif.hProcess);   //Close handle to process
+	CloseHandle(pif.hThread);    //Close handle to thread
+	Sleep(10000);
 }
 int main()
 {
-	
 	patch();
 
-	//Start ESP program
-	start_esp();
-	printf("HandleCount %d  Flag %x\n", g_obj_handle->HandleCount, g_obj_handle->Flags);
+	//StartESP();
+
+	system("pause");
 
 	unpatch();
-	
+
 	system("pause");
 	return 0;
 }
