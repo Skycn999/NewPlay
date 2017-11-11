@@ -16,7 +16,7 @@ int main() {
 		return 1;
 	}
 
-	Overlay * p_esp_overlay = new Overlay(pMem);
+	Overlay * p_esp_overlay = new Overlay();
 	p_esp_overlay->run();
 	
 	system("pause");
