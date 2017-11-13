@@ -1,8 +1,7 @@
 #include "common.hpp"
 #include "Overlay.h"
-
-
-
+#include "GameInfo.h"
+#include <TlHelp32.h>
 
 DWORD GetProcessID(WCHAR* processName)
 {
@@ -17,7 +16,7 @@ DWORD GetProcessID(WCHAR* processName)
 		goto EXIT;
 	do
 	{
-		if (!wcscmp(processName, pe32.szExeFile)) {
+		if (wcsstr(pe32.szExeFile, processName)) {
 			processID = pe32.th32ProcessID;
 			break;
 		}
@@ -41,19 +40,21 @@ DWORD WaitProcessID(WCHAR* processName) {
 
 int main() {	
 
-
 	PGameMemHelper *pMem = new PGameMemHelper();
 
-	DWORD gamePid = WaitProcessID(L"TslGame.exe");
+	DWORD gamePid = WaitProcessID(L"ame.exe");
 	if (!pMem->InitGameMem(gamePid)) {
 		cout << "Init Memory failed" << endl;
 		return 1;
 	}
 
-	Overlay * p_esp_overlay = new Overlay();
-	cout << "Overlay Created" << endl;
-	p_esp_overlay->run();
+	GameInfo * pGame = new GameInfo(pMem);
 
-	system("pause");
+	Sleep(30000);
+	pGame->CacheNames();
+
+	Overlay::init(pGame);
+	Overlay::run();
+
 	return 0;
 }

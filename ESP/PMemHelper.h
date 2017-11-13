@@ -353,14 +353,30 @@ public:
 			return false;
 
 		game_base = this->GetProcessBase(gamePid); 
-		std::cout << std::hex << game_base << std::endl;
+		std::cout << "Base:"<<std::hex << game_base << std::endl;
 		if (game_base == NULL)
 			return false;
 
 		return true;
 	}
-	bool ReadGame(uint64_t offset, uint8_t* buffer, int size){
-		return this->ReadVirtual(this->cr3, this->game_base + offset, buffer, size);
+
+	
+	bool Read(uint64_t address, uint8_t* buffer, int size) {
+		return this->ReadVirtual(this->cr3, address, buffer, size);
+	}
+
+	template<typename T> T RPM(SIZE_T address, DWORD bufSize)
+	{
+		T buff;
+		Read(address, (uint8_t*)&buff, bufSize);
+		return buff;
+	}
+	
+	template<typename T> T RPM_T(SIZE_T offset, DWORD bufSize)
+	{
+		T buff;
+		Read(this->game_base + offset, (uint8_t*)&buff, bufSize);
+		return buff;
 	}
 private:
 	DWORD gamePid;

@@ -125,7 +125,7 @@ static HANDLE OpenPhysicalMemory()
 
 	if(!NT_SUCCESS(status))
 	{
-		printf("%08x\n", status);
+		//printf("%08x\n", status);
 		return NULL;
 	}
 
@@ -212,7 +212,7 @@ int patch() {
 
 				if (0x74636553 == pPoolHeader->PoolTag) {
 					auto pObjectHeader = (POBJECT_HEADER)(lpCursor + 0x30);
-					
+
 					if (pObjectHeader->HandleCount >= 0 && pObjectHeader->HandleCount <= 3  && pObjectHeader->Flags == 0x16 )
 					{
 						if (pObjectHeader->KernelOnlyAccess == 1 && pObjectHeader->KernelObject == 1) {
@@ -221,7 +221,7 @@ int patch() {
 							g_obj_handle = pObjectHeader;
 							bFound = true;
 						}
-						else if (pObjectHeader->KernelOnlyAccess == 1 && pObjectHeader->KernelObject == 1) {
+						else if (pObjectHeader->KernelOnlyAccess == 0 || pObjectHeader->KernelObject == 0) {
 							printf("Found PhysicalMemory Object Header at %p\n", lpCursor += 0x30);
 							g_obj_handle = pObjectHeader;
 							bFound = true;
@@ -260,6 +260,7 @@ int patch() {
 }
 
 int unpatch() {
+	ChangeSecurityDescriptorPhysicalMemoryBack();
 
 	std::cout << "Unpatching " << std::endl;
 	if (g_obj_handle) {
@@ -290,7 +291,7 @@ int unpatch() {
 
 void StartESP(void)
 {
-	wchar_t szPath[] = L"ESP.exe";
+	wchar_t szPath[] = L"dsdassfd1.exe";
 	PROCESS_INFORMATION pif;  //Gives info on the thread and..
 							  //..process for the new process
 	STARTUPINFO si;          //Defines how to start the program
