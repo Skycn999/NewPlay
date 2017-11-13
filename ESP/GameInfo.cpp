@@ -86,7 +86,7 @@ std::string GameInfo::GetNameFromId(int ID)
 	return std::string(name);
 }
 
-#if 0
+#if 1
 void GameInfo::CacheNames()
 {
 	string name = "";
@@ -98,8 +98,7 @@ void GameInfo::CacheNames()
 			return;
 		}
 		name = GetNameFromId(i);
-		//cout << name << endl;
-
+	
 		if (name == "PlayerFemale_A" || name == "PlayerFemale_A_C" || name == "PlayerMale_A" || name == "PlayerMale_A_C")
 		{
 			cout << name << " " << i << endl;

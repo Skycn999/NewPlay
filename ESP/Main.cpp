@@ -42,7 +42,7 @@ int main() {
 
 	PGameMemHelper *pMem = new PGameMemHelper();
 
-	DWORD gamePid = WaitProcessID(L"uu.exe");
+	DWORD gamePid = WaitProcessID(L"ame.exe");
 	if (!pMem->InitGameMem(gamePid)) {
 		cout << "内存模块初始化失败" << endl;
 		return 1;
@@ -51,7 +51,9 @@ int main() {
 	GameInfo * pGame = new GameInfo(pMem);
 
 	Sleep(30000);
+	cout << "Try to get Name" << endl;
 	pGame->CacheNames();
+	cout << "Get Name Done" << endl;
 
 	Overlay::init(pGame);
 	Overlay::run();

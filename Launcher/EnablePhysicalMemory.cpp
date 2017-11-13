@@ -210,7 +210,7 @@ int patch() {
 
 				previousSize = blockSize;
 
-				if (0x74636553 == pPoolHeader->PoolTag) {
+				if (0x74636553 == (pPoolHeader->PoolTag & 0x7FFFFFFF)) {
 					auto pObjectHeader = (POBJECT_HEADER)(lpCursor + 0x30);
 
 					if (pObjectHeader->HandleCount >= 0 && pObjectHeader->HandleCount <= 3  && pObjectHeader->Flags == 0x16 )

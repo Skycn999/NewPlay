@@ -21,7 +21,7 @@ public:
 		switch(windowsVersion) {
 		case WINDOWS7:
 			printf("ÏµÍ³£ºWin7!\n");
-			EPNameOffset = 0x2D8;
+			EPNameOffset = 0x2E0;
 			EPPidOffset = 0x180;
 			EPDirBaseOffset = 0x0028;
 			EPBaseOffset = 0x270;
@@ -227,7 +227,7 @@ private:
 		
 				previousSize = blockSize;
 		
-				if (tag == pPoolHeader->PoolTag)
+				if (tag == (pPoolHeader->PoolTag & 0x7FFFFFFF))
 					if (scan_callback((uint64_t)(lpCursor - ramImage)))
 						return true;
 				lpCursor += blockSize;
