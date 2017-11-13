@@ -42,9 +42,9 @@ int main() {
 
 	PGameMemHelper *pMem = new PGameMemHelper();
 
-	DWORD gamePid = WaitProcessID(L"ame.exe");
+	DWORD gamePid = WaitProcessID(L"uu.exe");
 	if (!pMem->InitGameMem(gamePid)) {
-		cout << "Init Memory failed" << endl;
+		cout << "内存模块初始化失败" << endl;
 		return 1;
 	}
 

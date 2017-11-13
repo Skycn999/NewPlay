@@ -20,7 +20,7 @@ public:
 		auto windowsVersion = getVersion();
 		switch(windowsVersion) {
 		case WINDOWS7:
-			printf("Windows 7 detected!\n");
+			printf("系统：Win7!\n");
 			EPNameOffset = 0x2D8;
 			EPPidOffset = 0x180;
 			EPDirBaseOffset = 0x0028;
@@ -28,7 +28,7 @@ public:
 			EPLinkOffset = 0x188;
 			break;
 		case WINDOWS8:
-			printf("Windows 8 detected - Untested, if this bugs, please report on github!\n");
+			printf("Win8 未测试\n");
 			EPNameOffset = 0x438;
 			EPPidOffset = 0x2E0;
 			EPDirBaseOffset = 0x0028;
@@ -36,7 +36,7 @@ public:
 			EPLinkOffset = 0x2E8;
 			break;
 		case WINDOWS81:
-			printf("Windows 8.1 detected - Untested, if this bugs, please report on github!\n");
+			printf("Win8.1 未测试\n");
 			EPNameOffset = 0x438;
 			EPPidOffset = 0x2E0;
 			EPDirBaseOffset = 0x0028;
@@ -45,7 +45,7 @@ public:
 			break;
 		// win10 1703
 		case WINDOWS10:
-			printf("Windows 10 detected!\n");
+			printf("Win10!\n");
 			EPNameOffset = 0x450;
 			EPPidOffset = 0x02E0;
 			EPDirBaseOffset = 0x0028;
@@ -53,7 +53,7 @@ public:
 			EPLinkOffset = 0x02E8;
 			break;
 		default:
-			printf("Unsupported OS detected, this probably won't work!\n");
+			printf("未知系统\n");
 			EPNameOffset = 0x450;
 			EPPidOffset = 0x02E0;
 			EPDirBaseOffset = 0x0028;
@@ -74,9 +74,9 @@ public:
 		mMemInfo[mInfoCount - 1].Size -= 0x1000;
 		uint8_t* startScan = 0;
 		if (!MapPhysicalMemory(mPMemHandle, (PDWORD64)&startScan, &mMemInfo[mInfoCount - 1].End, (PDWORD64)&ramImage))
-			printf("Mapping failed...\n");
+			printf("安装 失败...\n");
 		else
-			printf("Mapping Success...\n");
+			printf("安装 成功...\n");
 		CloseHandle(mPMemHandle);
 	}
 

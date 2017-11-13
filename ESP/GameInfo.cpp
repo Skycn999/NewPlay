@@ -86,7 +86,7 @@ std::string GameInfo::GetNameFromId(int ID)
 	return std::string(name);
 }
 
-#ifdef BANED
+#if 0
 void GameInfo::CacheNames()
 {
 	string name = "";
