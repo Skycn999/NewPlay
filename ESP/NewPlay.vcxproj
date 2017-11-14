@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <None Include="..\.gitignore" />
+    <None Include="enStr.py" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameInfo.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="Overlay.cpp" />
     <ClCompile Include="PhysicalMemory.cpp" />
     <ClCompile Include="Superfetch.cpp" />
+    <ClCompile Include="Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="common.hpp" />
@@ -148,8 +150,11 @@
     <ClInclude Include="Overlay.h" />
     <ClInclude Include="PhysicalMemory.h" />
     <ClInclude Include="PMemHelper.h" />
+    <ClInclude Include="STR.h" />
+    <ClInclude Include="STR_E.h" />
     <ClInclude Include="Superfetch.h" />
     <ClInclude Include="SuperfetchNative.h" />
+    <ClInclude Include="Util.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

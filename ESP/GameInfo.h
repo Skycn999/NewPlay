@@ -3,8 +3,6 @@
 #include "common.hpp"
 #include "PhysicalMemory.h"
 #include "PMemHelper.h"
-#include <vector>
-
 
 class Vector3
 {
@@ -67,8 +65,8 @@ struct FCameraCacheEntry
 };
 
 
-class Player {
-public:
+struct Entity {
+	wchar_t name[64];
 	int health;
 	int distance;
 	Vector3 pos;
@@ -80,37 +78,44 @@ public:
 	GameInfo(PGameMemHelper *pMem);
 	~GameInfo();
 	void CacheNames();
-	void update();
+
+	void Update();
 
 private:
-	void UpdateAddress();
-	FCameraCacheEntry GetCameraCache();
-	std::string GetNameFromId(int ID);
-	Vector3 inline GetLocalPlayerPos();
+	inline void UpdateAddress();
+	inline FCameraCacheEntry GetCameraCache();
+	inline void GetLocalPlayerInfo();
+	inline void GetAllEntity();
+	inline void GetPlayer(DWORD_PTR entity);
+	inline void GetLoot(DWORD_PTR entity);
+	inline void GetVehicle(DWORD_PTR entity, wchar_t *name);
 
+	std::string GetNameFromId(int ID);
+	
 public:
+	vector<Entity> players;
+	vector<Entity> loots;
+	vector<Entity> vehicles;
+	FCameraCacheEntry cameracache = { NULL };
+
+private:
 	PGameMemHelper *pMem;
 	int ActorIds[4] = {0x10580,0x10581,0x10585,0x10586};
 	int uaz[3];
 	int dacia[4];
-	int motorbike[5];
+	int motorbike[4];
 	int buggy[3];
 	int boat = 0;
-	int itemtype[2];
-
+	int item = 0;
+	int itemComponent = 0;
+ 
 	DWORD_PTR pUWorld;
 	DWORD_PTR pGameInstance;
 	DWORD_PTR pULocalPlayer;
 	DWORD_PTR pLocalPlayer;
 	DWORD_PTR pViewportClient;
-
 	DWORD_PTR pPWorld;
 	DWORD_PTR pUlevel;
-	FCameraCacheEntry cameracache = { NULL };
 	Vector3 local;
-
-	float min_distance;
-	Player player[100];
-	int player_num;
 };
 

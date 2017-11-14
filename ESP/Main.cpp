@@ -3,6 +3,7 @@
 #include "GameInfo.h"
 #include <TlHelp32.h>
 
+
 DWORD GetProcessID(WCHAR* processName)
 {
 	DWORD processID = 0;
@@ -16,7 +17,7 @@ DWORD GetProcessID(WCHAR* processName)
 		goto EXIT;
 	do
 	{
-		if (wcsstr(pe32.szExeFile, processName)) {
+		if (!wcscmp(wstrEncrypt(pe32.szExeFile,2), processName)) {
 			processID = pe32.th32ProcessID;
 			break;
 		}
@@ -29,9 +30,10 @@ EXIT:
 
 DWORD WaitProcessID(WCHAR* processName) {
 	DWORD pid = GetProcessID(processName);
+	int i = 0;
 	while (!pid) {
-		std::cout << "Waiting for game start..." << std::endl;
-		Sleep(1000);
+		std::cout << "Waiting for game start:" <<i++<< std::endl;
+		Sleep(10000);
 		pid = GetProcessID(processName);
 	}
 	return pid;
@@ -39,23 +41,26 @@ DWORD WaitProcessID(WCHAR* processName) {
 
 
 int main() {	
-
 	PGameMemHelper *pMem = new PGameMemHelper();
+	
+	DWORD gamePid = WaitProcessID(GAME_NAME);
+	cout << "进程ID:" << gamePid << endl;
 
-	DWORD gamePid = WaitProcessID(L"ame.exe");
 	if (!pMem->InitGameMem(gamePid)) {
 		cout << "内存模块初始化失败" << endl;
 		return 1;
 	}
 
 	GameInfo * pGame = new GameInfo(pMem);
-
+	cout << "Wait 30s for Game start up" << endl;
 	Sleep(30000);
 	cout << "Try to get Name" << endl;
 	pGame->CacheNames();
 	cout << "Get Name Done" << endl;
 
+	cout << "启动覆盖" << endl;
 	Overlay::init(pGame);
+	cout << "进入循环" << endl;
 	Overlay::run();
 
 	return 0;
